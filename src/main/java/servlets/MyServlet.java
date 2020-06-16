@@ -15,16 +15,25 @@ public class MyServlet extends HttpServlet {
         PrintWriter writer = response.getWriter();
 
         String val = request.getParameter("value");
-        int valInt = Integer.parseInt(val);
-        writer.println(valInt + valInt);
-        response.setStatus(200);
 
-        if (Double.isNaN(valInt)) {
+        if (val.equals("")){
             writer.println(0);
-            response.setStatus(400);
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }else {
+            try{
+                int valInt = Integer.parseInt(val);
+                writer.println(valInt + valInt);
+                response.setStatus(HttpServletResponse.SC_OK);
+            }catch (NumberFormatException | NullPointerException e){
+                writer.println(0);
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            }
+
         }
-        response.setContentType("text/html;charset=utf-8");
-        response.setStatus(HttpServletResponse.SC_OK);
+
+
+       // response.setContentType("text/html;charset=utf-8");
+       // response.setStatus(HttpServletResponse.SC_OK);
 
     }
 }
